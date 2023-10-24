@@ -47,6 +47,8 @@ function $RouteProvider() {
 
   var routes = {};
 
+  var baseLocation = '';
+
   /**
    * @ngdoc method
    * @name $routeProvider#when
@@ -186,6 +188,10 @@ function $RouteProvider() {
 
     return this;
   };
+
+  this.setBaseLocation = function(baseLocation) {
+    this.baseLocation = baseLocation;
+  }
 
   /**
    * @ngdoc property
@@ -565,6 +571,9 @@ function $RouteProvider() {
     }
 
     function prepareRoute($locationEvent) {
+      if (!window.location.pathname.startsWith(baseLocation)) {
+        return;
+      }
       var lastRoute = $route.current;
 
       preparedRoute = parseRoute();
@@ -582,6 +591,9 @@ function $RouteProvider() {
     }
 
     function commitRoute() {
+      if (!window.location.pathname.startsWith(baseLocation)) {
+        return;
+      }
       var lastRoute = $route.current;
       var nextRoute = preparedRoute;
 
